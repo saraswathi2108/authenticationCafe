@@ -41,6 +41,7 @@ public class BranchController {
         return branchService.getAllActiveBranches();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/branches")
     public List<BranchResponse> getAllBranchesForAdmin() {
         return branchService.getAllBranchesForAdmin();

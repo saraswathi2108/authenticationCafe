@@ -21,7 +21,7 @@ public class AdminInitializer implements CommandLineRunner {
         if (!userRepository.existsByRole(Role.ADMIN)) {
 
             User admin = new User();
-            admin.setEmail("admin@cafe.com");
+            admin.setEmail("admin@cafe.com".toLowerCase());
             admin.setPassword(passwordEncoder.encode("Admin@123"));
             admin.setRole(Role.ADMIN);
             admin.setFirstLogin(true);

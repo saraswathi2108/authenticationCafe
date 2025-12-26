@@ -1,12 +1,21 @@
 package com.example.cafe.cafe.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+
 import lombok.Data;
 
 @Data
 public class BranchResponse {
-
-    public Long id;
-    public String branchCode;
-    public String branchName;
-    public boolean active;
+    private Long id;
+    private String branchCode;
+    private String branchName;
+    private String address;
+    private boolean active;
 }
+
+
+

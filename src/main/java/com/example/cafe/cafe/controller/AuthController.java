@@ -7,6 +7,7 @@ import com.example.cafe.cafe.dto.LoginResponse;
 import com.example.cafe.cafe.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class AuthController {
         return authService.login(request);
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','STAFF')")
     @PostMapping("/change-password")
     public void changePassword(
             @Valid @RequestBody ChangePasswordRequest request,

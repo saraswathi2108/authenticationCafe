@@ -64,10 +64,12 @@ public class BranchService {
 
     private BranchResponse toResponse(Branch branch) {
         BranchResponse dto = new BranchResponse();
-        dto.id = branch.getId();
-        dto.branchCode = branch.getBranchCode();
-        dto.branchName = branch.getBranchName();
-        dto.active = branch.isActive();
+        dto.setId(branch.getId());
+        dto.setBranchCode(branch.getBranchCode());
+        dto.setBranchName(branch.getBranchName());
+        dto.setAddress(branch.getAddress());
+        dto.setActive(branch.isActive());
         return dto;
     }
+
 }
