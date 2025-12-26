@@ -24,7 +24,9 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    private Long branchId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 
     private boolean firstLogin = true;
 

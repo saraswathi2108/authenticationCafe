@@ -1,5 +1,6 @@
 package com.example.cafe.cafe.service;
 
+import com.example.cafe.cafe.entity.Branch;
 import com.example.cafe.cafe.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,18 +28,22 @@ public class JwtService {
     }
 
     public String generateToken(User user) {
+
+        Branch branch = user.getBranch();
+
         return Jwts.builder()
-                .setSubject(user.getId().toString())
-                .claim("email", user.getEmail())
+                .setSubject(user.getEmail())   // ✅ EMAIL AS SUBJECT
                 .claim("role", user.getRole().name())
-                .claim("branchId", user.getBranchId())
+                .claim("branchId", branch != null ? branch.getId() : null)
+                .claim("branchCode", branch != null ? branch.getBranchCode() : null)
+                .claim("branchName", branch != null ? branch.getBranchName() : null)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public Claims validateToken(String token) {
+        public Claims validateToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
@@ -46,8 +51,8 @@ public class JwtService {
                 .getBody();
     }
 
-    public String extractUserId(String token) {
-        return validateToken(token).getSubject();
+    public Long extractUserId(String token) {
+        return Long.valueOf(validateToken(token).getSubject());
     }
 
     public String extractRole(String token) {
@@ -56,5 +61,13 @@ public class JwtService {
 
     public Long extractBranchId(String token) {
         return validateToken(token).get("branchId", Long.class);
+    }
+
+    public String extractBranchCode(String token) {
+        return validateToken(token).get("branchCode", String.class);
+    }
+
+    public String extractBranchName(String token) {
+        return validateToken(token).get("branchName", String.class);
     }
 }

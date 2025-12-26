@@ -29,14 +29,20 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+
+                        // PUBLIC AUTH ENDPOINTS
                         .requestMatchers(
-                                "/auth/login",
-                                "/auth/change-password",
+                                "/api/auth/login",
+                             //   "/api/auth/change-password",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/actuator/**"
                         ).permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // ADMIN ONLY
+                        .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
+
+                        // EVERYTHING ELSE
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

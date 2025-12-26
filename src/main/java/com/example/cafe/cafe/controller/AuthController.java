@@ -5,7 +5,9 @@ import com.example.cafe.cafe.dto.ChangePasswordRequest;
 import com.example.cafe.cafe.dto.LoginRequest;
 import com.example.cafe.cafe.dto.LoginResponse;
 import com.example.cafe.cafe.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,10 +22,18 @@ public class AuthController {
         return authService.login(request);
     }
 
+
     @PostMapping("/change-password")
     public void changePassword(
-            @RequestHeader("email") String email,
-            @RequestBody ChangePasswordRequest request) {
-        authService.changePassword(email, request);
+            @Valid @RequestBody ChangePasswordRequest request,
+            Authentication authentication
+    ) {
+        if (authentication == null || authentication.getName() == null) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        authService.changePassword(authentication.getName(), request);
     }
+
+
 }
